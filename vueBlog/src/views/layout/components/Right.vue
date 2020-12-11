@@ -1,3 +1,9 @@
+/*
+ * @Author: zhangmeng 
+ * @Date: 2020-12-11 10:24:27 
+ * @Last Modified by: zhangmeng
+ * @Last Modified time: 2020-12-11 10:24:50
+ */
 <template>
   <div class="app-right">
     <div class="app-right-item app-right-about">
