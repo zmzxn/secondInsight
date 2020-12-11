@@ -5,7 +5,24 @@
         <img src="@img/logo.png" alt="">
       </div>
       <div class="app-header-cont-router">
-        路由
+        <ul class="router-cont">
+          <li class="router-cont-item" v-for="(item, index) in routerList[0].children" :key="index">
+            <span><svg-icon icon-class="dashboard"></svg-icon></span>
+            <span>{{item.meta.title}}</span>
+          </li>
+          <li class="router-cont-item">
+            <span><svg-icon icon-class="dashboard"></svg-icon></span>
+            <span>记事</span>
+          </li>
+          <li class="router-cont-item">
+            <span><svg-icon icon-class="dashboard"></svg-icon></span>
+            <span>生活</span>
+          </li>
+          <li class="router-cont-item">
+            <span><svg-icon icon-class="dashboard"></svg-icon></span>
+            <span>自述</span>
+          </li>
+        </ul>
       </div>
       <div class="app-header-cont-search">
         <el-input
@@ -24,10 +41,17 @@ export default {
   data() {
     return {
       search: '',
-      searchBarFixed: false
+      searchBarFixed: false,
+      routerList: this.$store.state.menu.routerList
     }
   },
+  watch: {
+    $route(to, from) {
+        console.log(to, from)
+    },
+  },
   mounted() {
+    console.log(this.$store.state.menu.routerList)
     window.addEventListener('scroll', this.handleScroll)
   },
   methods: {
@@ -79,14 +103,22 @@ export default {
       }
       &-router {
         width: calc(100% - 260px);
-        display: flex;
-        align-items: center;
-        flex-wrap: nowrap;
-        justify-content: space-between;
         position: relative;
         height: 100%;
         margin: 0;
         font-size: 18px;
+        display: flex;
+        align-items: center;
+        .router-cont {
+          display: flex;
+          align-items: center;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          align-items: center;
+          &-item {
+            margin-right: 20px;
+          }
+        }
       }
       &-search {
 

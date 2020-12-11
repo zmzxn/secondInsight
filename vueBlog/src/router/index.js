@@ -4,7 +4,7 @@ import Layout from '../views/layout/layout.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
+export const constantRouterMap = [
   {
     path: '/',
     redirect: '/index',
@@ -15,7 +15,7 @@ const routes = [
         name: 'index',
         component: () => import('../views/dashboard'),
         meta: {
-          title: '首页',
+          title: '文章',
           noPublicBottom: true,
           noNavbar: true,
           noSideWidget: true
@@ -26,7 +26,29 @@ const routes = [
         name: 'article',
         component: () => import('../views/article'),
         meta: {
-          title: '文章',
+          title: '记事',
+          noPublicBottom: true,
+          noNavbar: true,
+          noSideWidget: true
+        }
+      },
+      {
+        path: 'life',
+        name: 'life',
+        component: () => import('../views/life'),
+        meta: {
+          title: '生活',
+          noPublicBottom: true,
+          noNavbar: true,
+          noSideWidget: true
+        }
+      },
+      {
+        path: 'about',
+        name: 'about',
+        component: () => import('../views/about'),
+        meta: {
+          title: '自述',
           noPublicBottom: true,
           noNavbar: true,
           noSideWidget: true
@@ -41,7 +63,7 @@ const router = new VueRouter({
   scrollBehavior: () => ({
     y: 0
   }),
-  routes
+  routes: constantRouterMap
 })
 
 export default router
