@@ -15,3 +15,5 @@
 
 # 配置的全局复制组件，使用方式
   <copy-board copydata="需要复制的内容"></copy-board>
+
+# 配置型修改
