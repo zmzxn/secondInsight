@@ -6,31 +6,16 @@
       </div>
       <div class="app-header-cont-router">
         <ul class="router-cont">
-          <li class="router-cont-item" v-for="(item, index) in routerList[0].children" :key="index">
-            <span><svg-icon icon-class="dashboard"></svg-icon></span>
+          <li class="router-cont-item" v-for="(item, index) in routerList" :key="index" @click="handleLinkTo(item)" :class="item.menuActive ? 'active':''">
             <span>{{item.meta.title}}</span>
-          </li>
-          <li class="router-cont-item">
-            <span><svg-icon icon-class="dashboard"></svg-icon></span>
-            <span>记事</span>
-          </li>
-          <li class="router-cont-item">
-            <span><svg-icon icon-class="dashboard"></svg-icon></span>
-            <span>生活</span>
-          </li>
-          <li class="router-cont-item">
-            <span><svg-icon icon-class="dashboard"></svg-icon></span>
-            <span>自述</span>
           </li>
         </ul>
       </div>
       <div class="app-header-cont-search">
-        <el-input
-            placeholder="输入关键词"
-            v-model="search"
-            suffix-icon="el-icon-search"
-            @keyup.enter.native="getSearchCont">
-        </el-input>
+        <div class="search-cont" :class="{ 'input-focus': isFocus }">
+          <input v-model="search"  type="text" maxlength="100" autocomplete="off" placeholder="请输入关键词搜索"  @focus="isFocus = true" @blur="isFocus = false" />
+          <span class="search-btn" :class="search ? 'btn-col':''"><svg-icon icon-class="search"></svg-icon></span>
+        </div>
       </div>
     </div>
   </div>
@@ -40,6 +25,7 @@
 export default {
   data() {
     return {
+      isFocus: false,
       search: '',
       searchBarFixed: false,
       routerList: this.$store.state.menu.routerList
@@ -48,11 +34,12 @@ export default {
   watch: {
     $route(to, from) {
         console.log(to, from)
+        this.selectMenu()
     },
   },
   mounted() {
-    console.log(this.$store.state.menu.routerList)
     window.addEventListener('scroll', this.handleScroll)
+    this.selectMenu()
   },
   methods: {
     getSearchCont() {
@@ -62,6 +49,28 @@ export default {
     handleScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       this.searchBarFixed = scrollTop > 400 // 400px距顶部的高度
+    },
+    // 左侧菜单点击 路由跳转
+    handleLinkTo(item) {
+        if (item.menuActive) { return }
+        this.$router.push({
+            name: item.name
+        })
+    },
+    // 左侧菜单的默认选中
+    selectMenu() {
+      const routeName = this.$route.name
+      const routerList = this.routerList
+      if (!routerList) {
+          return false
+      }
+      routerList.forEach((item, index) => {
+        if (item.name === routeName) {
+          this.$set(this.routerList[index], 'menuActive', true)
+        } else {
+          this.$set(this.routerList[index], 'menuActive', false)
+        }
+      })
     }
   },
   destroyed() {
@@ -102,7 +111,7 @@ export default {
         }
       }
       &-router {
-        width: calc(100% - 260px);
+        width: calc(100% - 560px);
         position: relative;
         height: 100%;
         margin: 0;
@@ -117,11 +126,74 @@ export default {
           align-items: center;
           &-item {
             margin-right: 20px;
+            &.active {
+              color: $mainColor;
+            }
+            &:hover {
+              color: $mainColor;
+            }
           }
         }
       }
       &-search {
-
+        width: 500px;
+        height: 34px;
+        position: relative;
+        
+        .search-cont {
+          width: 100%;
+          height: 34px;
+          background: #f6f6f6;
+          border-radius: 999px;
+          padding-left: 16px;
+          border: 1px solid #f6f6f6;
+          &.input-focus {
+            background-color: #fff;
+            border-color: #8590a6;
+            .search-btn {
+              color: $mainColor;
+            }
+          }
+          input {
+            padding: 0;
+            overflow: hidden;
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            background: transparent;
+            border: none;
+            resize: none;
+            color: #121212;
+            height: 32px;
+            width: 100%;
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+        .search-btn {
+          position: absolute;
+          right: 0;
+          cursor: pointer;
+          border-bottom-right-radius: 999px;
+          border-top-right-radius: 999px;
+          margin-left: 12px;
+          padding: 0 12px;
+          background: transparent;
+          border-color: transparent;
+          color: #333;
+          display: inline-block;
+          font-size: 20px;
+          line-height: 32px;
+          text-align: center;
+          &:hover {
+            color: $mainColor;
+          }
+          &.btn-col {
+            background-color: $mainColor;
+            color: #fff !important;
+          }
+        }
       }
     }
   }

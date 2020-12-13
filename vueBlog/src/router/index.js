@@ -22,6 +22,28 @@ export const constantRouterMap = [
         }
       },
       {
+        path: 'interview',
+        name: 'interview',
+        component: () => import('../views/interview'),
+        meta: {
+          title: '面试',
+          noPublicBottom: true,
+          noNavbar: true,
+          noSideWidget: true
+        }
+      },
+      {
+        path: 'studay',
+        name: 'studay',
+        component: () => import('../views/studay'),
+        meta: {
+          title: '学习',
+          noPublicBottom: true,
+          noNavbar: true,
+          noSideWidget: true
+        }
+      },
+      {
         path: 'article',
         name: 'article',
         component: () => import('../views/article'),
